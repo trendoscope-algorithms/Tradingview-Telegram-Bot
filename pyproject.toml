@@ -8,6 +8,7 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.8"
 Flask = "^2.0.2"
 python-telegram-bot = "^13.8.1"
+selenium = "^4.0.0"
 
 [tool.poetry.dev-dependencies]
 

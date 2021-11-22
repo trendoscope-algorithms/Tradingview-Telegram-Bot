@@ -2,17 +2,23 @@ from flask import Flask, request
 from threading import Thread
 import json
 import telegrambot
+import screenshot
+
 app = Flask('')
 @app.route('/webhook', methods=['POST', 'GET'])
 def get_webhook():
   try:
     jsonRequest=request.args.get("jsonRequest")
+    chart = request.args.get("chart")
     if request.method == 'POST':
       payload = request.data
       if jsonRequest == "true":
         payload = json.dumps(request.json, indent=4)
       print("received data: \n", payload)
       telegrambot.sendMessage(payload)
+      if chart != None:
+        chartUrl = screenshot.capture_chart(chart)
+        telegrambot.sendMessage(chartUrl)
       return 'success', 200
     else:
       print("Get request")
