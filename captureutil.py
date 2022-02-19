@@ -29,14 +29,13 @@ def setup():
 def login(driver, username, password):
   print('--->Login start')
   driver.get('https://www.tradingview.com/#signin')
-  actions = ActionChains(driver)
-  actions.send_keys(Keys.ESCAPE).perform()
+  # actions = ActionChains(driver)
+  # actions.send_keys(Keys.ESCAPE).perform()
   driver.find_element(By.CLASS_NAME, "i-clearfix").click()
   driver.find_element(By.NAME, "username").send_keys(username)
   driver.find_element(By.NAME, "password").send_keys(password)
   driver.find_element(By.XPATH, "//button[@type='submit']").click()
-
-  driver.find_element(By.XPATH, "//button[@aria-label='Open user menu']").click()
+  time.sleep(3)
   print('Login end')
 
 def open_chart(driver, adjustment=100):
