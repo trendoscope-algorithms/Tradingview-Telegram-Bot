@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 from threading import Thread
 import telegrambot
+from tkinter import Tk
 
 chart = ""
 loginNeeded = False
@@ -18,8 +19,8 @@ def setup():
   chrome_options.add_argument('--force-dark-mode')
   chrome_options.add_argument("--window-size=2560,1440")
   capabilities = {
-  # "resolution": "2560X1440"
-  # "resolution": "1280X720"
+    # "resolution": "2560X1440"
+    # "resolution": "1280X720"
     "resolution": "768X432"
   }
   driver = webdriver.Chrome(options=chrome_options, desired_capabilities=capabilities)
@@ -35,6 +36,7 @@ def login(driver, username, password):
   driver.find_element(By.NAME, "username").send_keys(username)
   driver.find_element(By.NAME, "password").send_keys(password)
   driver.find_element(By.XPATH, "//button[@type='submit']").click()
+  # driver.find_element(By.XPATH, "//button[@aria-label='Open user menu']").click()
   time.sleep(3)
   print('Login end')
 
@@ -47,19 +49,17 @@ def open_chart(driver, adjustment=100):
   actions = ActionChains(driver)
   actions.send_keys(Keys.ESCAPE).perform()
   actions.send_keys(Keys.RIGHT*adjustment).perform()
-  print('Chart is ready for capture')
+
+  print('Captured Link :')
 
 def screenshot(driver):
   print('--->Starting capture : '+str(datetime.now()))
-  driver.find_element(By.ID, "header-toolbar-screenshot").click()
-  driver.find_element(By.XPATH, "//div[@data-name='open-image-in-new-tab']").click()
-  print('Sleep for 3 seconds post capture')
-  time.sleep(3)
-  print('Switch tab')
-  driver.switch_to.window(driver.window_handles[1])
-  print('Capture complete!!')
+  ActionChains(driver).key_down(Keys.ALT).key_down('s').key_up(Keys.ALT).perform()
+  clipboard = Tk().clipboard_get()
+  return clipboard
 
 def quit_browser(driver):
+  driver.get('https://www.tradingview.com/logout')
   print('--->Exit browser : '+str(datetime.now()))
   driver.quit()
 
@@ -70,8 +70,8 @@ def send_chart():
     password = os.environ['TV_PASSWORD']
     login(driver, username, password)
   open_chart(driver)
-  screenshot(driver)
-  telegrambot.sendMessage(driver.current_url)
+  screenshot_url = screenshot(driver)
+  telegrambot.sendMessage(screenshot_url)
   quit_browser(driver)
 
 def send_chart_async(chartUrl, loginRequired=False):
