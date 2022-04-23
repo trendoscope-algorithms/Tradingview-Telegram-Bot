@@ -10,7 +10,6 @@ app = Flask('')
 def post_message():
   try:
     jsonRequest=request.args.get("jsonRequest")
-    print(jsonRequest)
     chart = request.args.get("chart")
     tblfmt = request.args.get("tblfmt", default = 'plain')
     loginRequired = request.args.get('loginRequired', default=False, type=lambda v: v.lower() == 'true')
@@ -19,7 +18,10 @@ def post_message():
     if request.method == 'POST':
       payload = request.data
       if jsonRequest == "true":
-        dataframe = pd.DataFrame(request.json, index=[0]).transpose()
+        jsonPayload = request.json
+        if 'Custom' in jsonPayload:
+          chart = jsonPayload.pop('Custom')
+        dataframe = pd.DataFrame(jsonPayload, index=[0]).transpose()
         payload = '```'+tabulate(dataframe,tablefmt=tblfmt)+'```'
       print("[I] Payload: \n", payload)
       telegrambot.sendMessage(payload)
