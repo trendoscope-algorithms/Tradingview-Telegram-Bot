@@ -4,6 +4,7 @@ import telegrambot
 import captureutil
 import pandas as pd
 from tabulate import tabulate
+import tradingview
 
 app = Flask('')
 @app.route('/webhook', methods=['POST', 'GET'])
@@ -13,6 +14,7 @@ def post_message():
     chart = request.args.get("chart")
     tblfmt = request.args.get("tblfmt", default = 'plain')
     loginRequired = request.args.get('loginRequired', default=False, type=lambda v: v.lower() == 'true')
+    ticker = request.args.get('ticker', default='NONE', type=lambda v: v.upper() == 'true')
     print("[I] Login Required : ",loginRequired)
     print("[I] Chart : ",chart)
     if request.method == 'POST':
@@ -26,7 +28,7 @@ def post_message():
       print("[I] Payload: \n", payload)
       telegrambot.sendMessage(payload)
       if chart != None:
-        captureutil.send_chart_async(chart, loginRequired)
+        captureutil.send_chart_async(chart, ticker, payload, loginRequired)
       return 'success', 200
     else:
       print("Get request")
@@ -37,6 +39,7 @@ def post_message():
 
 @app.route('/')
 def main():
+  tradingview.login()
   return 'Your bot is alive!'
 
 def run():
