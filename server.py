@@ -13,10 +13,10 @@ def post_message():
     jsonRequest=request.args.get("jsonRequest")
     chart = request.args.get("chart")
     tblfmt = request.args.get("tblfmt", default = 'plain')
-    loginRequired = request.args.get('loginRequired', default=False, type=lambda v: v.lower() == 'true')
-    ticker = request.args.get('ticker', default='NONE', type=lambda v: v.upper() == 'true')
-    print("[I] Login Required : ",loginRequired)
+    ticker = request.args.get('ticker', default='NONE')
+    delivery = request.args.get("delivery", default = 'together')
     print("[I] Chart : ",chart)
+    print("[I] Ticker : ",ticker)
     if request.method == 'POST':
       payload = request.data
       if jsonRequest == "true":
@@ -26,9 +26,10 @@ def post_message():
         dataframe = pd.DataFrame(jsonPayload, index=[0]).transpose()
         payload = '```'+tabulate(dataframe,tablefmt=tblfmt)+'```'
       print("[I] Payload: \n", payload)
-      telegrambot.sendMessage(payload)
+      if(delivery == 'asap'):
+        telegrambot.sendMessage(payload)
       if chart != None:
-        captureutil.send_chart_async(chart, ticker, payload, loginRequired)
+        captureutil.send_chart_async(chart, ticker, payload, delivery)
       return 'success', 200
     else:
       print("Get request")

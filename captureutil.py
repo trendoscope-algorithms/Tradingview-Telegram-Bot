@@ -1,10 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.common.by import By
-import os
 import time
 import config
+from replit import db
 from datetime import datetime
 from threading import Thread
 import telegrambot
@@ -17,7 +16,7 @@ def setup():
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--force-dark-mode')
-    chrome_options.add_argument("--window-size=2560,1440")
+    chrome_options.add_argument("--window-size=1280,720")
     capabilities = {
         # "resolution": "2560X1440"
         # "resolution": "1280X720"
@@ -32,8 +31,9 @@ def setup():
 def screenshot(driver, chart, ticker, adjustment=100):
     print('--->Opening Chart ' + chart + ' : ' + str(datetime.now()))
 
-    chartUrl = config.urls["tvchart"] + chart + '/' + ('symbol='+ticker if ticker != 'NONE' else '')
-  
+    chartUrl = config.urls["tvchart"] + chart + '/' + (
+        '?symbol=' + ticker) if ticker != 'NONE' else ''
+
     driver.get(chartUrl)
     print('Sleep for 10 seconds - wait for chart to load')
     time.sleep(10)
@@ -56,23 +56,27 @@ def quit_browser(driver):
     driver.quit()
 
 
-def send_chart(chart, ticker, message, loginNeeded):
+def send_chart(chart, ticker, message, delivery):
     driver = setup()
-    if loginNeeded:
-        driver.get("https://www.tradingview.com")
-        driver.add_cookie({
-            'name': 'sessionid',
-            'value': os.environ['sessionId'],
-            'domain': '.tradingview.com'
-        })
+    driver.get("https://www.tradingview.com")
+    sessionId = db["sessionid"] if 'sessionid' in db.keys() else 'abcd'
+    print('Session Id Used :', sessionId)
+    driver.add_cookie({
+        'name': 'sessionid',
+        'value': sessionId,
+        'domain': '.tradingview.com'
+    })
     screenshot_url = screenshot(driver, chart, ticker)
-    telegrambot.sendMessage(message + '\n' + screenshot_url)
+    if (delivery != 'asap'):
+        telegrambot.sendMessage(message)
+    telegrambot.sendMessage(screenshot_url)
     quit_browser(driver)
 
 
-def send_chart_async(chartUrl, ticker = 'NONE', message = '', loginRequired=True):
+def send_chart_async(chartUrl, ticker='NONE', message='', delivery='asap'):
     try:
-        capture = Thread(target=send_chart, args=[chartUrl, ticker, message, loginRequired])
+        capture = Thread(target=send_chart,
+                         args=[chartUrl, ticker, message, delivery])
         capture.start()
     except Exception as e:
         print("[X] Capture error:\n>", e)
