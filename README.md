@@ -1,4 +1,4 @@
-[![Trendoscope](https://assets.zyrosite.com/YBg17aEx8BCroqG1/logo-no-background-d95yX4Bp8PhPDxZx.svg)](https://www.trendoscope.au)
+[![Trendoscope](https://docs.trendoscope.io/media/posts/44/logo-no-background.svg)](https://trendoscope.io)
 # Tradingview-Telegram-Bot
 [![CodeFactor](https://www.codefactor.io/repository/github/trendoscope-algorithms/tradingview-telegram-bot/badge/main)](https://www.codefactor.io/repository/github/trendoscope-algorithms/tradingview-telegram-bot/overview/main)
 <br>
@@ -48,7 +48,7 @@ If you found this project interesting or useful, create accounts with my referra
 - [BingX](https://bingx.com/en-us/partner/Trendoscope/)
 
 # Profiles
-<a href="https://p.trendoscope.au/"><img src="https://s3.tradingview.com/userpics/7387160-gqgs_big.png" width="100" height="100"></a>
+<a href="https://p.trendoscope.au/"><img src="https://docs.trendoscope.io/media/website/logo-no-background.png" width="100" height="100"></a>
 <a href="https://p.trendoscope.au/twitter"><img src="https://i.pinimg.com/originals/aa/3d/75/aa3d750ddec109594ac7c89cb8cbabab.jpg" width="100" height="100"></a>
 <a href="https://p.trendoscope.au/telegram"><img src="https://i.pinimg.com/originals/70/c3/ea/70c3ea9e43ebd11ec98de96937529408.jpg" width="100" height="100"></a>
 <a href="https://p.trendoscope.au/discord"><img src="https://i.pinimg.com/originals/b6/fe/4a/b6fe4a830e0263d8344b63e3dbcf3033.jpg" width="100" height="100"></a>
