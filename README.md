@@ -1,4 +1,4 @@
-[![Trendoscope](https://svgshare.com/i/u3u.svg)](https://trendoscope.io)
+[![Trendoscope](https://umsousercontent.com/lib_jnHIJpnVlRcdXHEm/fp0cmvoarz835cz6.svg)](https://trendoscope.io)
 # Tradingview-Telegram-Bot
 [![CodeFactor](https://www.codefactor.io/repository/github/trendoscope-algorithms/tradingview-telegram-bot/badge/main)](https://www.codefactor.io/repository/github/trendoscope-algorithms/tradingview-telegram-bot/overview/main)
 <br>
